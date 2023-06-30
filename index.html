@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Minecraft Command Generator</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <style>
+    /* Add your custom styles here */
+    body {
+      background-color: #3a0057;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      height: 100vh;
+      padding: 20px;
+    }
+
+    .left-panel {
+      width: 50%;
+      padding-right: 20px;
+    }
+
+    .right-panel {
+      width: 50%;
+      padding-left: 20px;
+    }
+
+    .left-panel h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .left-panel label {
+      display: block;
+      margin-top: 10px;
+    }
+
+    .left-panel input {
+      width: 100%;
+      padding: 5px;
+      background-color: #fff;
+      color: #333;
+      border: none;
+    }
+
+    .colorizer {
+      margin-top: 10px;
+    }
+
+    .name-format-dropdown {
+      margin-top: 10px;
+    }
+
+    .left-panel button {
+      margin-top: 10px;
+      padding: 5px 10px;
+      background-color: #751aff;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .right-panel #output {
+      border: 1px solid #ccc;
+      padding: 10px;
+      background-color: #1f143f;
+      color: #fff;
+      height: 100%;
+      font-family: monospace;
+      font-size: 14px;
+      white-space: pre-wrap;
+      overflow-wrap: break-word;
+      overflow-x: auto;
+      max-width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="left-panel">
+      <h1>Minecraft Command Generator</h1>
+      <label for="item">Item:</label>
+      <input type="text" id="item" placeholder="Enter item name">
+      <label for="quantity">Quantity:</label>
+      <input type="number" id="quantity" min="1" max="64" value="1">
+      <label for="custom-name">Custom Name:</label>
+      <input type="text" id="custom-name" placeholder="Enter custom name">
+      <div class="colorizer">
+        <label for="color-dropdown">Color:</label>
+        <select id="color-dropdown">
+          <option value="white">White</option>
+          <option value="red">Red</option>
+          <option value="green">Green</option>
+          <option value="blue">Blue</option>
+          <option value="black">Black</option>
+          <option value="dark_blue">Dark Blue</option>
+          <option value="dark_green">Dark Green</option>
+          <option value="aqua">Aqua</option>
+          <option value="dark_aqua">Dark Aqua</option>
+          <option value="dark_red">Dark Red</option>
+          <option value="dark_purple">Dark Purple</option>
+          <option value="gold">Gold</option>
+          <option value="gray">Gray</option>
+          <option value="dark_gray">Dark Gray</option>
+          <option value="light_purple">Light Purple</option>
+          <option value="yellow">Yellow</option>
+          <!-- Add more color options if needed -->
+        </select>
+      </div>
+      <div class="name-format-dropdown">
+        <label for="name-format-dropdown">Name Format:</label>
+        <select id="name-format-dropdown">
+          <option value="none">None</option>
+          <option value="bold">Bold</option>
+          <option value="underline">Underline</option>
+          <option value="italic">Italic</option>
+          <!-- Add more name format options if needed -->
+        </select>
+      </div>
+      <button onclick="generateCommand()">Generate Command</button>
+    </div>
+    <div class="right-panel">
+      <div id="output"></div>
+    </div>
+  </div>
+
+  <script>
+    function setColor() {
+      var colorDropdown = document.getElementById("color-dropdown");
+      var selectedColor = colorDropdown.value;
+      colorDropdown.style.backgroundColor = selectedColor;
+    }
+
+    function generateCommand() {
+      var item = document.getElementById("item").value;
+      var quantity = document.getElementById("quantity").value;
+      var customName = document.getElementById("custom-name").value;
+      var colorDropdown = document.getElementById("color-dropdown");
+      var colorize = colorDropdown.value !== "none";
+      var color = colorDropdown.value;
+      var nameFormatDropdown = document.getElementById("name-format-dropdown");
+      var selectedNameFormat = nameFormatDropdown.value;
+      var isBold = selectedNameFormat === "bold";
+      var isUnderline = selectedNameFormat === "underline";
+      var isItalic = selectedNameFormat === "italic";
+
+      var nameFormat = "";
+      if (isBold) nameFormat += ',"bold":true';
+      if (isUnderline) nameFormat += ',"underlined":true';
+      if (isItalic) nameFormat += ',"italic":false';
+
+      var command = `/give @p ${item}{display:{Name:'{"text":"${customName}","color":"${color}"${nameFormat}}'}} ${quantity}`;
+      document.getElementById("output").textContent = command;
+    }
+  </script>
+</body>
+</html>
